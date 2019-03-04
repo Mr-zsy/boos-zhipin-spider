@@ -1,0 +1,8 @@
+Flask_Cors==3.0.7
+Flask_PyMongo==2.2.0
+Scrapy==1.6.0
+Werkzeug==0.14.1
+Flask==1.0.2
+selenium==3.141.0
+pymongo==3.7.2
+redis==3.2.0
