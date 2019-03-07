@@ -6,6 +6,8 @@
 # https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
 import scrapy
+import requests
+import json
 from selenium.webdriver.common.action_chains import ActionChains
 from scrapy.http import HtmlResponse
 from selenium.webdriver.support import expected_conditions as EC
@@ -14,27 +16,43 @@ from selenium.webdriver.common.by import By
 from spider.spider.proxy.database import RedisClient
 
 
+
 class ProxyMiddleWare(object):
 
     def __init__(self):
         self.proxy = RedisClient().pop_proxy().decode("utf8")
 
     def process_request(self, request, spider):
-        if spider.ipError:
-            '''对request对象加上proxy'''
-            print("-------this is request ip----------:" + self.proxy)
-            request.meta['proxy'] = self.proxy
+        # if spider.ipError:
+        #     '''对request对象加上proxy'''
+        #     print("-------this is request ip----------:" + self.proxy)
+        #     proxy = requests.get('http://127.0.0.1:3289/pop')
+        #     proxy_json = json.loads(proxy.text)
+        #     request.meta['proxy'] = proxy_json['http']
+        #     # request.meta['proxy'] = self.proxy
+        proxy = requests.get('http://127.0.0.1:3289/pop')
+        proxy_json = json.loads(proxy.text)
+        request.meta['proxy'] = proxy_json['proxy']
 
-    def process_response(self, request, response, spider):
-        '''对返回的response处理'''
-        # 如果返回的response状态不是200，重新生成当前request对象
-        if response.status != 200:
-            self.proxy = RedisClient().pop_proxy().decode("utf8")
-            print("response not 200:" + self.proxy)
-            # 对当前reque加上代理
-            request.meta['proxy'] = self.proxy
-            return request
-        return response
+    # def process_response(self, request, response, spider):
+    #     '''对返回的response处理'''
+    #     # 如果返回的response状态不是200，重新生成当前request对象
+    #     if response.status != 200:
+    #         self.proxy = RedisClient().pop_proxy().decode("utf8")
+    #         print("response not 200:" + self.proxy)
+    #         # 对当前reque加上代理
+    #
+    #         # 请求代理池，随即返回一个代理
+    #
+    #         # proxy = requests.get('http://127.0.0.1:3289/pop')
+    #         # proxy_json = json.loads(proxy.text)
+    #         # request.meta['proxy'] = proxy_json['http']
+    #
+    #         #
+    #
+    #         # request.meta['proxy'] = self.proxy
+    #         return request
+    #     return response
 
 
 class SelenuimDownloaderMiddleware(object):
@@ -52,7 +70,7 @@ class SelenuimDownloaderMiddleware(object):
 
             base = spider.spiderContent['base']
             kind = spider.spiderContent['kind']
-
+            print('request.meta funck',request.meta)
             baseDict = {
                 '北京': 'ul[class="show"]>li[ka="hot-city-101010100"]',
                 '上海': 'ul[class="show"]>li[ka="hot-city-101020100"]',
@@ -112,9 +130,7 @@ class SelenuimDownloaderMiddleware(object):
                     return request
             except NoSuchElementException:
                 response = browser.page_source
-
-
-        return HtmlResponse(url=request.url, body=response, encoding='utf-8', request=request)
+                return HtmlResponse(url=request.url, body=response, encoding='utf-8', request=request)
 
 
 

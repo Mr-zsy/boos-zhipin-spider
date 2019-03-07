@@ -54,9 +54,9 @@ class MainSpider(scrapy.Spider):
     def parse(self, response):
         employItems = response.css('.job-list>ul>li')
         nextPageUrl = response.xpath('//a[@ka="page-next"]/@href').extract_first()
-
+        # self.logger(response.body)
         kind = response.xpath('//input[@class="ipt-search"]/@value').extract_first()
-        # print(nextPageUrl)
+
         for item in employItems:
             spiderItem = SpiderItem()
             spiderItem['base'] = item.css('p::text').extract_first()[0:2]
