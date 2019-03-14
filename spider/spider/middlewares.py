@@ -12,6 +12,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from selenium.webdriver.common.by import By
 from spider.spider.proxy.database import RedisClient
+import requests
+import json
 
 
 class ProxyMiddleWare(object):
@@ -20,10 +22,14 @@ class ProxyMiddleWare(object):
         self.proxy = RedisClient().pop_proxy().decode("utf8")
 
     def process_request(self, request, spider):
-        if spider.ipError:
-            '''对request对象加上proxy'''
-            print("-------this is request ip----------:" + self.proxy)
-            request.meta['proxy'] = self.proxy
+        # if spider.ipError:
+        #     '''对request对象加上proxy'''
+        #     print("-------this is request ip----------:" + self.proxy)
+        #     request.meta['proxy'] = self.proxy
+        proxy = requests.get('http://127.0.0.1:3289/pop')
+        proxy_json = json.loads(proxy.text)
+        request.meta['proxy'] = proxy_json['proxy']
+
 
     def process_response(self, request, response, spider):
         '''对返回的response处理'''
