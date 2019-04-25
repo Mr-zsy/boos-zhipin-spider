@@ -2,21 +2,21 @@ from flask import Flask, jsonify, request, render_template
 # from flask_cors import CORS
 from flask_pymongo import PyMongo
 
-app = Flask(__name__,static_url_path='')
+web_app = Flask(__name__,static_url_path='')
 # CORS(app, supports_credentials=True)
 
-app.config.update(
+web_app.config.update(
     MONGO_URI='mongodb://localhost:27017/bs',
 )
-mongo = PyMongo(app)
+mongo = PyMongo(web_app)
 table = mongo.db.info
 
 
-@app.route('/', methods=['GET'])
+@web_app.route('/', methods=['GET'])
 def hello_world():
     return render_template('index.html')
 
-@app.route('/baseMsg', methods=['POST'])
+@web_app.route('/baseMsg', methods=['POST'])
 def baseMsg():
 
     base = request.form['base']
@@ -106,7 +106,7 @@ def baseMsg():
 
 
 
-@app.route('/payment1', methods=['POST'])
+@web_app.route('/payment1', methods=['POST'])
 def payment1():
     kind = request.form['position']
     baseList = ['北京', '上海', '广州', '深圳', '杭州', '天津', '西安', '成都', '武汉']
@@ -144,7 +144,7 @@ def payment1():
         'list':list
     })
 
-@app.route('/payment2', methods=['POST'])
+@web_app.route('/payment2', methods=['POST'])
 def payment2():
     base = request.form['base']
     kindList = ['Python', "Java", "Web前端", 'C++']
@@ -186,11 +186,10 @@ def payment2():
 
 #TEST
 
-@app.route('/post_create_data', methods=["POST"])
+@web_app.route('/post_create_data', methods=["POST"])
 def test():
     return {
         'hhh':'hahh'
     }
 
-if __name__ == '__main__':
-    app.run()
+

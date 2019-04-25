@@ -8,6 +8,8 @@
 #     https://doc.scrapy.org/en/latest/topics/settings.html
 #     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
+from fake_useragent import UserAgent
+
 
 BOT_NAME = 'spider'
 
@@ -21,10 +23,13 @@ MONGO_PORT = 27017
 MONGO_DB = 'bs'
 MONGO_COLLECTION = 'info'
 
-
+USER_NAME = '18135247181'
+USER_PASSWORD = '123qwe'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'
+ua = UserAgent()
+USER_AGENT = ua.random
+#USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False

@@ -66,9 +66,9 @@ class SpiderPipeline(object):
         item['updateMonth'] = int(item['updateMonth'])
 
         #存库----------------
-        # if not self.table.find_one(dict(item)):
-        #     # print(item)
-        #     self.table.insert_one(dict(item))
+        if not self.table.find_one(dict(item)):
+            # print(item)
+            self.table.insert_one(dict(item))
         #关闭数据库连接
-        self.client.close()
+        # self.client.close()
         return item

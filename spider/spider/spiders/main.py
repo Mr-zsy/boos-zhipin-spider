@@ -4,6 +4,7 @@ from spider.spider.items import SpiderItem
 from selenium import webdriver
 from scrapy.utils.project import get_project_settings
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.action_chains import ActionChains
 import time
 from spider.spider.proxy.database import RedisClient
 
@@ -14,12 +15,13 @@ class MainSpider(scrapy.Spider):
     #允许爬取的域名
     allowed_domains = ['www.zhipin.com']
     #spider启动时爬取的url
-    start_urls = ['https://www.zhipin.com/?ka=header-home']
+    start_urls = ['https://www.zhipin.com']
     #对settings中的值进行覆盖
     custom_settings = {
         'DOWNLOADER_MIDDLEWARES':{
-            'spider.spider.middlewares.ProxyMiddleWare':542,
-            'spider.spider.middlewares.SelenuimDownloaderMiddleware':543
+            'spider.spider.middlewares.LoginMiddleWare': 541,
+            'spider.spider.middlewares.ProxyMiddleWare': 542,
+            'spider.spider.middlewares.SelenuimDownloaderMiddleware': 543
         }
     }
 
@@ -32,9 +34,10 @@ class MainSpider(scrapy.Spider):
         #页面加载超时时间
         self.browser.set_page_load_timeout(self.timeout)
         #元素加载超时时间
-        self.wait = WebDriverWait(self.browser, 10)
+        self.wait = WebDriverWait(self.browser, 15)
+        # 登录状态
+        self.loginStatus = False
 
-        self.ipError = False
 
         self.kindList = ['Python', "Java", "Web前端", 'C++']
         # self.kindList = [ "Web前端", 'C++']
@@ -49,6 +52,9 @@ class MainSpider(scrapy.Spider):
         #     'kind': 'Web前端',
         #     'base': '北京'
         # }
+
+
+
 
         #请求start_urls后返回的响应作为唯一参数传给此函数
     def parse(self, response):
@@ -70,6 +76,7 @@ class MainSpider(scrapy.Spider):
             spiderItem['kind'] = kind
             yield spiderItem
         if nextPageUrl != 'javascript:;':
+            time.sleep(0.5)
             next_page = response.urljoin(nextPageUrl)
             # 回调parse处理下一页的url
             yield scrapy.Request(next_page, callback=self.parse, dont_filter=True)
@@ -85,7 +92,7 @@ class MainSpider(scrapy.Spider):
                 self.spiderContent['kind'] = self.kindList[self.kindListIndex]
                 self.spiderContent['base'] = self.baseList[self.baseListIndex]
                 time.sleep(1)
-                yield scrapy.Request('https://www.zhipin.com/?ka=header-home', callback=self.parse, dont_filter=True)
+                yield scrapy.Request('https://www.zhipin.com', callback=self.parse, dont_filter=True)
             elif self.baseListIndex == 8 and self.kindListIndex == 3:
                 print('OVER!!!')
             else:
@@ -94,7 +101,7 @@ class MainSpider(scrapy.Spider):
                 self.spiderContent['kind'] = self.kindList[self.kindListIndex]
                 self.spiderContent['base'] = self.baseList[self.baseListIndex]
                 time.sleep(2)
-                yield scrapy.Request('https://www.zhipin.com/?ka=header-home',callback=self.parse, dont_filter=True)
+                yield scrapy.Request('https://www.zhipin.com',callback=self.parse, dont_filter=True)
 
 
 
