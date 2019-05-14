@@ -10,4 +10,4 @@ def startSpider():
     cmdline.execute('scrapy crawl recruitment'.split())
 
 
-startSpider()
+# startSpider()

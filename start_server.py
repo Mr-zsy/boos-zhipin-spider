@@ -5,6 +5,10 @@ from proxy_pool.async_proxy_pool.config import SERVER_HOST, SERVER_PORT, SERVER_
 
 from server.web_server import web_app
 
+from spider.spider.startSpider import startSpider
+
+
+
 # if __name__ == '__main__':
 
 def startProxyApp():
@@ -17,6 +21,8 @@ def startWebApp():
 
 p1 = multiprocessing.Process(target=startProxyApp)
 p2 = multiprocessing.Process(target=startWebApp)
+p3 = multiprocessing.Process(target=startSpider)
 
 p1.start()
 p2.start()
+p3.start()
