@@ -5,7 +5,7 @@ import random
 
 import redis
 
-from .config import (
+from config import (
     REDIS_KEY,
     REDIS_PORT,
     REDIS_PASSWORD,

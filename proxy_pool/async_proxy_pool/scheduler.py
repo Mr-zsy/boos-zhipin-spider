@@ -5,11 +5,11 @@ import time
 
 import schedule
 
-from .config import CRAWLER_RUN_CYCLE, VALIDATOR_RUN_CYCLE
+from config import CRAWLER_RUN_CYCLE, VALIDATOR_RUN_CYCLE
 
-from .crawler import crawler
-from .validator import validator
-from .logger import logger
+from crawler import crawler
+from validator import validator
+from logger import logger
 
 
 def run_schedule():

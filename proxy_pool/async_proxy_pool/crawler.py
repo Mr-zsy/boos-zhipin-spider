@@ -5,9 +5,9 @@ import re
 
 import pyquery
 
-from .utils import requests
-from .database import RedisClient
-from .logger import logger
+from utils import requests
+from database import RedisClient
+from logger import logger
 
 
 redis_conn = RedisClient()
@@ -28,12 +28,12 @@ class Crawler:
         """
         启动收集器
         """
-        logger.info("Crawler working...")
+        logger.info("爬取中...")
         for func in all_funcs:
             for proxy in func():
                 redis_conn.add_proxy(proxy)
                 logger.info("Crawler √ {}".format(proxy))
-        logger.info("Crawler resting...")
+        logger.info("稍等，稍等...")
 
     @staticmethod
     @collect_funcs

@@ -2,7 +2,7 @@
 # coding=utf-8
 
 from flask import Flask, jsonify
-from .database import RedisClient
+from database import RedisClient
 
 proxy_app = Flask(__name__)
 redis_conn = RedisClient()

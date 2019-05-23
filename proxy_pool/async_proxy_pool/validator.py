@@ -6,9 +6,9 @@ import asyncio
 
 import aiohttp
 
-from .config import VALIDATOR_BASE_URL, VALIDATOR_BATCH_COUNT, REQUEST_TIMEOUT
-from .logger import logger
-from .database import RedisClient
+from async_proxy_pool.config import VALIDATOR_BASE_URL, VALIDATOR_BATCH_COUNT, REQUEST_TIMEOUT
+from async_proxy_pool.logger import logger
+from async_proxy_pool.database import RedisClient
 
 
 VALIDATOR_BASE_URL = os.environ.get("VALIDATOR_BASE_URL") or VALIDATOR_BASE_URL

@@ -5,7 +5,7 @@ import asyncio
 
 import aiohttp
 
-from .config import HEADERS, REQUEST_TIMEOUT, REQUEST_DELAY
+from config import HEADERS, REQUEST_TIMEOUT, REQUEST_DELAY
 
 
 LOOP = asyncio.get_event_loop()
