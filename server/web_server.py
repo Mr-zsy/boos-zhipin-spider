@@ -1,9 +1,9 @@
 from flask import Flask, jsonify, request, render_template
-# from flask_cors import CORS
+from flask_cors import CORS
 from flask_pymongo import PyMongo
 
 web_app = Flask(__name__,static_url_path='')
-# CORS(app, supports_credentials=True)
+CORS(web_app, supports_credentials=True)
 
 web_app.config.update(
     MONGO_URI='mongodb://localhost:27017/bs',
@@ -21,7 +21,7 @@ def baseMsg():
 
     base = request.form['base']
     kind = request.form['position']
-
+    print(kind);
     positionNum = table.find({'base':base, "kind":kind}).count()
     try:
         eduBgNum1 = table.find({'base':base, 'eduBg':'硕士', "kind":kind}).count()
@@ -69,7 +69,7 @@ def baseMsg():
         num = table.find({'base':base, "kind":kind, 'updateMonth':i}).count()
         minPaymentAvg = table.aggregate([
             {
-                '$match': {'base':base, 'updateMonth':i}
+                '$match': {'base':base, "kind":kind, 'updateMonth':i}
             },
             {
                 '$group': {'_id': 'null', 'minPayment_avg': {'$avg': '$minPayment'}}
@@ -77,7 +77,7 @@ def baseMsg():
         ])
         maxPaymentAvg = table.aggregate([
             {
-                '$match': {'base': base, 'updateMonth': i}
+                '$match': {'base': base, "kind":kind, 'updateMonth': i}
             },
             {
                 '$group': {'_id': 'null', 'maxPayment_avg': {'$avg': '$maxPayment'}}
@@ -191,5 +191,4 @@ def test():
     return {
         'hhh':'hahh'
     }
-
 
