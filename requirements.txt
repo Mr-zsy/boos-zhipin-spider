@@ -1,6 +1,6 @@
 selenium==3.141.0
 Scrapy==1.6.0
-redis==3.2.0
+redis==4.5.3
 Flask_PyMongo==2.2.0
 pymongo==3.7.2
 Flask==1.0.2
